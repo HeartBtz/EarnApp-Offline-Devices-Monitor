@@ -7,8 +7,8 @@ const client = new Client();
 
 client.login({
     authMethod: "google",
-    oauthRefreshToken: "",
-    xsrfToken: "",
+    oauthRefreshToken: "INSERT TOKEN HERE",
+    xsrfToken: "INSERT OTHER TOKEN HERE", //needed for endpoints like linking a device / or making a payout
 });
 
 //OR
@@ -32,8 +32,7 @@ const getDevices = async () => {
         const {online} = status[device.uuid];
         results[device.title] = {title: device.title, online, uuid: device.uuid, ips: device.ips};
     }
-    var currentPath = process.cwd();
-    var scriptWay = 'C:\\results.json'
+    var scriptWay = 'C:\\Users\\Public\\Documents\\EarnappOfflineMonitor\\results.json'
     fs.writeFile(scriptWay, JSON.stringify(results), 'utf8', (err)=>{
       
       if(err){
@@ -48,7 +47,7 @@ const getDevices = async () => {
 //-----------------------------------------------------------------------
 
 const readFileJson = async () => {
-  fs.readFile('results.json', 'utf8', (err, data) => {
+  fs.readFile('C:\\Users\\Public\\Documents\\EarnappOfflineMonitor\\results.json', 'utf8', (err, data) => {
     if (err){
         console.log(err);
     } else {

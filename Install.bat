@@ -1,1 +1,2 @@
-SCHTASKS /create /tn "Discord Bot" /tr "C:\Users\Virtu\Desktop\EarnApp_Offline_Devices_Monitor\LectureJSON.ps1" /sc MINUTE /mo 15
+setx EarnAppLogPath C:\Users\Public\Documents\EarnappOfflineMonitor\
+setx EarnAppPath  %~dp0%

@@ -20,7 +20,7 @@
 #                                                                                                                                        #
 $AvatarImageURL = 'https://cdn.discordapp.com/attachments/972197177029980172/975730277139746826/progyblue.png'                           #
 $AvatarName = "Monitor-Senseii"                                                                                                          #
-$WebHookUrl = 'https://discord.com/YourWebHookURL' #
+$WebHookUrl = 'Insert your discord WebHook URL here'                                                                                     #
 #                                                                                                                                        #
 #                                                                                                                                        #
 ##########################################################################################################################################
@@ -31,19 +31,20 @@ $date = "[$date]"
 return $date
 }
 function MakeLogMessage($message){
-    ADD-content -path "C:\LogsEarnappOfflineMonitor.log" -value "$(ObtainDate) $($message)"
+    ADD-content -path ($env:EarnAppLogPath + 'LogsEarnappOfflineMonitor.log') -value "$(ObtainDate) $($message)"
 }
 function FileTime{
-$ft = (Get-Date).ToFileTime()
+$ft = (Get-Date).ToFileTime().ToString()
 return $ft
 }
 
 
-$way = [System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Definition) # Cherche le chemin dans lequel les scripts sont.
-$OutputVar = node "$way\Infos.js" | Out-String #Lance le script JavaScript & envoie le résultat dans la variable $OutputVar => chemin du fichier JSON
-if (Test-Path "C:\results.json"){
+$scriptWay = $env:EarnAppPath # Cherche le chemin dans lequel les scripts sont.
+$resultsLogDir = $env:EarnAppLogPath
+$OutputVar = node ( $scriptWay + "Infos.js" ) | Out-String #Lance le script JavaScript & envoie le résultat dans la variable $OutputVar => chemin du fichier JSON
+if (Test-Path ($resultsLogDir + "results.json")){
     MakeLogMessage('JSON récupéré avec succès')
-    $inputJson = Get-Content "C:\results.json" | ConvertFrom-Json #Lecture & Inteprétation de results.json ($OutputVar) || Reading & Interprate of results.json
+    $inputJson = Get-Content ($resultsLogDir + 'results.json' ) | ConvertFrom-Json #Lecture & Inteprétation de results.json ($OutputVar) || Reading & Interprate of results.json
     $deviceNumber = $inputJson[0].PSObject.Properties.Name.Length #Nombre de Machines || Number of Devices 
     $devicesList = [System.Collections.ArrayList]@() #Tableau vide
     $offlineDevices = [System.Collections.ArrayList]@() #Tableau vide
@@ -74,14 +75,14 @@ if (Test-Path "C:\results.json"){
         $Thumbnail = New-DiscordThumbnail -Url $AvatarImageURL
         if(!$env:LAST_MESSAGE_HOUR){
             Send-DiscordMessage -WebHookUrl $WebHookUrl -Sections $Section -AvatarName $AvatarName -AvatarUrl $AvatarImageURL
-            $env:LAST_MESSAGE_HOUR=FileTime
+            cmd.exe /c "setx LAST_MESSAGE_HOUR $(FileTime)"
             MakeLogMessage("Le Bot a transmis le message sur Discord à $(Get-Date -Format 'HH:mm')")
             MakeLogMessage("Compteur démarré dans env:LAST_MESSAGE_HOUR")
         }else{
-            $TimeDifference = ($(FileTime) - $env:LAST_MESSAGE_HOUR).ToString()
+            $TimeDifference = ($(FileTime) - $env:LAST_MESSAGE_HOUR)
             if($TimeDifference -ge 54000000000){
                 Send-DiscordMessage -WebHookUrl $WebHookUrl -Sections $Section -AvatarName $AvatarName -AvatarUrl $AvatarImageURL
-                $env:LAST_MESSAGE_HOUR=FileTime
+                cmd.exe /c "setx LAST_MESSAGE_HOUR $(FileTime)"
                 MakeLogMessage("Le Bot a transmis le message sur Discord à $(Get-Date -Format 'HH:mm')")
                 MakeLogMessage("Compteur renouvelé dans env:LAST_MESSAGE_HOUR")
             }else{
@@ -89,11 +90,11 @@ if (Test-Path "C:\results.json"){
             }
         }             
      }
-    Remove-Item 'C:\results.json'
-    if ((Test-Path "C:\results.json") -like "False" ){
+    Remove-Item ( $resultsLogDir + 'results.json' )
+    if ((Test-Path ( $resultsLogDir + 'results.json' )) -like "False" ){
         MakeLogMessage('JSON Supprimé avec succès')
     }else{
         MakeLogMessage('Echec de la suppression du fichier JSON')
     }
 }#endIF Line:30
-ADD-content -path "C:\LogsEarnappOfflineMonitor.log" -value "$(ObtainDate)======================================================================="
+ADD-content -path ( $resultsLogDir + 'LogsEarnappOfflineMonitor.log' ) -value "$(ObtainDate)======================================================================="
