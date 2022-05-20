@@ -17,11 +17,11 @@
 #                                                                                                                                        #
 #                     =====================Informations WebHook Discord==========================                                        #
 #                                                                                                                                        #
-$oAuthRefreshToken = 'auth token'       #
+$oAuthRefreshToken = ''       #
 $AvatarImageURL = 'https://cdn.discordapp.com/attachments/972197177029980172/975730277139746826/progyblue.png'                           #
 $AvatarName = "Monitor-Senseii"                                                                                                          #
-$WebHookUrl = 'webhook link' #
-$ExcludedDevices = [System.Collections.ArrayList]@("DeviceName1","DeviceName2","DeviceName...","DeviceNameX","2Win5")                   #                                                                                                                                        #
+$WebHookUrl = '' #
+$ExcludedDevices = [System.Collections.ArrayList]@("DeviceName1","DeviceName2","DeviceName...","DeviceNameX","2Win7")                   #                                                                                                                                        #
 #                                                                                                                                        #
 #                                                                                                                                        #                                                                                                                                        #
 ##########################################################################################################################################
@@ -62,15 +62,15 @@ if (Test-Path ($resultsLogDir + "results.json")){
     #$isExcluded = [System.Collections.ArrayList]@() #Tableau vide
     if($offlineDeviceNumber -ne 0){ # Si le nombre de machines éteintes est différent de zéro
         MakeLogMessage("Un message va donc être envoyé sur Discord")
-        $Exclusion = '0'
+        $Exclusion = 0
         For ($j = 0; $j -lt $offlineDeviceNumber; $j++){
             $device = [string]$offlineDevices[$j]
             if ($device -in $ExcludedDevices){ #si y'a le device qui apparaît est dans la liste d'exclusion alors...
                 $Exclusion++
             }else{ #sinon...
                 $Name = ":red_square: **Device:** " + $inputJson[0].$device.title + " :red_square:" 
-                $Value = ":biohazard:**UUID:**   " + $inputJson[0].$device.uuid + " 
-                :globe_with_meridians:**IP:**   " + $inputJson[0].$device.ips #laisser la ligne sautée, c'est pour la présentation de l'embed dans discord
+                $Value = ":biohazard: **UUID:**   " + $inputJson[0].$device.uuid  + " 
+                :globe_with_meridians: **IP:**   " + $inputJson[0].$device.ips #laisser la ligne sautée, c'est pour la présentation de l'embed dans discord
                 $temp3 =  $Fact.Add($j) 
                 $Fact[$j] = New-DiscordFact -Name $Name -Value $Value -Inline $false
             }
@@ -79,7 +79,7 @@ if (Test-Path ($resultsLogDir + "results.json")){
 
         #DISCORD BOT SECTION | Consultez la Doc des devs pour plus d'informations sur la Librairie: https://evotec.xyz/hub/scripts/psdiscord-powershell-module/
         $Author = New-DiscordAuthor -Name $AvatarName -IconUrl $AvatarImageURL
-        $Section = New-DiscordSection -Title "$(Get-Date -Format 'HH:mm') | $offlineDeviceNumber Device(s) offline: " -Facts $Fact -Color BlueViolet -Author $Author -Thumbnail $Thumbnail 
+        $Section = New-DiscordSection -Title "$(Get-Date -Format 'HH:mm') | $($offlineDeviceNumber - $Exclusion) Device(s) offline | $Exclusion Excluded Device(s) " -Facts $Fact -Color BlueViolet -Author $Author -Thumbnail $Thumbnail 
         $Thumbnail = New-DiscordThumbnail -Url $AvatarImageURL
         if(!$env:LAST_MESSAGE_HOUR){
             Send-DiscordMessage -WebHookUrl $WebHookUrl -Sections $Section -AvatarName $AvatarName -AvatarUrl $AvatarImageURL
