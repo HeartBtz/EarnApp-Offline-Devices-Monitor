@@ -4,8 +4,8 @@
 #                                                                                                                                        #
 #                     ==============================Préréquis====================================                                        #
 #                                                                                                                                        #
-#Lancer le script Install.bat présent dans le dossier en tant qu'ADMINISTRATEUR                                                          #
-#Installer Node.js : https://nodejs.org/dist/v16.15.0/node-v16.15.0-x64.msi                                                              #
+# Lancer en tant qu'ADMINISTRATEUR le script Install.bat présent dans le dossier                                                         #
+# Installer Node.js : https://nodejs.org/dist/v16.15.0/node-v16.15.0-x64.msi                                                             #
 #                                                                                                                                        #
 #                                                                                                                                        #
 #                     ===Discord Powershell Bot Librairy https://github.com/EvotecIT/PSDiscord===                                        #
@@ -17,11 +17,12 @@
 #                                                                                                                                        #
 #                     =====================Informations WebHook Discord==========================                                        #
 #                                                                                                                                        #
-#                                                                                                                                        #
+$oAuthRefreshToken = 'ur Token Here'                                                                                                     #
 $AvatarImageURL = 'https://cdn.discordapp.com/attachments/972197177029980172/975730277139746826/progyblue.png'                           #
 $AvatarName = "Monitor-Senseii"                                                                                                          #
-$WebHookUrl = 'Insert your discord WebHook URL here'                                                                                     #
-#                                                                                                                                        #
+$WebHookUrl = 'ur WebHook Link Here'                                                                                                     #
+$ExcludedDevices = [System.Collections.ArrayList]@("DeviceName1","DeviceName2","DeviceName..","DeviceNameX")                             # 
+#                                                  Replace Devices Name by ur Devices.                                                   #
 #                                                                                                                                        #
 ##########################################################################################################################################
 
@@ -41,7 +42,7 @@ return $ft
 
 $scriptWay = $env:EarnAppPath # Cherche le chemin dans lequel les scripts sont.
 $resultsLogDir = $env:EarnAppLogPath
-$OutputVar = node ( $scriptWay + "Infos.js" ) | Out-String #Lance le script JavaScript & envoie le résultat dans la variable $OutputVar => chemin du fichier JSON
+$OutputVar = node ( $scriptWay + "Infos.js" ) $oAuthRefreshToken | Out-String #Lance le script JavaScript & envoie le résultat dans la variable $OutputVar => chemin du fichier JSON
 if (Test-Path ($resultsLogDir + "results.json")){
     MakeLogMessage('JSON récupéré avec succès')
     $inputJson = Get-Content ($resultsLogDir + 'results.json' ) | ConvertFrom-Json #Lecture & Inteprétation de results.json ($OutputVar) || Reading & Interprate of results.json
@@ -58,20 +59,31 @@ if (Test-Path ($resultsLogDir + "results.json")){
     }
     $offlineDeviceNumber = $offlineDevices.Count #Nombre de Machines offline || Number of offline devices
     MakeLogMessage("Il y a $offlineDeviceNumber client(s) déconnecté(s) ")
-    
+    #$isExcluded = [System.Collections.ArrayList]@() #Tableau vide
     if($offlineDeviceNumber -ne 0){ # Si le nombre de machines éteintes est différent de zéro
         MakeLogMessage("Un message va donc être envoyé sur Discord")
+       
         For ($j = 0; $j -lt $offlineDeviceNumber; $j++){
             $device = [string]$offlineDevices[$j]
-            $Name = ":red_square: Concerned Device:  " + $inputJson[0].$device.title + " :red_square:"
-            $Value = "UUID: " + $inputJson[0].$device.uuid + "
-            IP: " + $inputJson[0].$device.ips
-            $temp3 =  $Fact.Add($j)
-            $Fact[$j] = New-DiscordFact -Name $Name -Value $Value -Inline $false
+            if ($device -in $ExcludedDevices){ #si y'a le device qui apparaît est dans la liste d'exclusion alors...
+                $device
+                $ExcludedDevices
+                $Name = ":green_square: **Device:** " + $inputJson[0].$device.title + " :green_square:" #ça osef
+                $Value = ":recycle: **Excluded** " # ça aussi
+                $temp3 =  $Fact.Add($j) #ça encore
+            }else{ #sinon...
+                $device
+                $ExcludedDevices
+                $Name = ":red_square: **Device:** " + $inputJson[0].$device.title + " :red_square:" #on s'en fout encore....
+                $Value = ":biohazard:**UUID:**   " + $inputJson[0].$device.uuid + " 
+                :globe_with_meridians:**IP:**   " + $inputJson[0].$device.ips #et toujours....
+                $temp3 =  $Fact.Add($j) #fin du je m'en foutisme
+            }
+            $Fact[$j] = New-DiscordFact -Name $Name -Value $Value -Inline $false #peu importe
         }
         #DISCORD BOT SECTION | Consultez la Doc des devs pour plus d'informations sur la Librairie: https://evotec.xyz/hub/scripts/psdiscord-powershell-module/
         $Author = New-DiscordAuthor -Name $AvatarName -IconUrl $AvatarImageURL
-        $Section = New-DiscordSection -Title "$offlineDeviceNumber Device(s) offline: " -Facts $Fact -Color BlueViolet -Author $Author -Thumbnail $Thumbnail 
+        $Section = New-DiscordSection -Title "$(Get-Date -Format 'HH:mm') | $offlineDeviceNumber Device(s) offline: " -Facts $Fact -Color BlueViolet -Author $Author -Thumbnail $Thumbnail 
         $Thumbnail = New-DiscordThumbnail -Url $AvatarImageURL
         if(!$env:LAST_MESSAGE_HOUR){
             Send-DiscordMessage -WebHookUrl $WebHookUrl -Sections $Section -AvatarName $AvatarName -AvatarUrl $AvatarImageURL
@@ -89,7 +101,7 @@ if (Test-Path ($resultsLogDir + "results.json")){
                 MakeLogMessage("Un message a déjà été envoyé il y a moins de 1h30")
             }
         }             
-     }
+    }
     Remove-Item ( $resultsLogDir + 'results.json' )
     if ((Test-Path ( $resultsLogDir + 'results.json' )) -like "False" ){
         MakeLogMessage('JSON Supprimé avec succès')

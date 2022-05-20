@@ -5,10 +5,12 @@ const fs = require('fs');
 
 const client = new Client();
 
+var Token = process.argv
+
 client.login({
     authMethod: "google",
-    oauthRefreshToken: "INSERT TOKEN HERE",
-    xsrfToken: "INSERT OTHER TOKEN HERE", //needed for endpoints like linking a device / or making a payout
+    oauthRefreshToken: Token[2],
+    xsrfToken: "uE9Tm4sXtk4wHEz4tZFJyANB", //needed for endpoints like linking a device / or making a payout
 });
 
 //OR
