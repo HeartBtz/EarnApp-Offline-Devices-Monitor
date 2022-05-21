@@ -1,6 +1,6 @@
 ﻿
 ##########################################################################################################################################
-#                                                                                                                                        #
+#                                               READ THE README.MD FILE                                                                  #
 #                                                                                                                                        #
 #                     ==============================Préréquis====================================                                        #
 #                                                                                                                                        #
@@ -15,15 +15,15 @@
 #> Update-Module PSDiscord                                                                                                               #
 #                                                                                                                                        #
 #                                                                                                                                        #
-#                     =====================Informations WebHook Discord==========================                                        #
+#                     ==================Informations Variables à compléter=======================                                        #
 #                                                                                                                                        #
-$oAuthRefreshToken = ''                                                                                                                  #
+$oAuthRefreshToken = 'YOUR TOKEN HERE'       #
 $AvatarImageURL = 'https://cdn.discordapp.com/attachments/972197177029980172/975730277139746826/progyblue.png'                           #
 $AvatarName = "Monitor-Senseii"                                                                                                          #
-$WebHookUrl = ''                                                                                                                         #
-$ExcludedDevices = [System.Collections.ArrayList]@("DeviceName1","DeviceName2","DeviceName...","DeviceNameX")                            #                                                                                                                                        #
+$WebHookUrl = 'YOUR DISCORD WEBHOOK HERE' #
+$ExcludedDevices = @("DeviceName1","DeviceName2","DeviceName...","DeviceNameX","2Win5")                                                  #
 #                                                                                                                                        #
-#                                                                                                                                        #                                                                                                                                        #
+#                                                                                                                                        #
 ##########################################################################################################################################
 
 function ObtainDate{
