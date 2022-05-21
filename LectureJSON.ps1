@@ -17,11 +17,11 @@
 #                                                                                                                                        #
 #                     ==================Informations Variables à compléter=======================                                        #
 #                                                                                                                                        #
-$oAuthRefreshToken = 'YOUR TOKEN HERE'       #
-$AvatarImageURL = 'https://cdn.discordapp.com/attachments/972197177029980172/975730277139746826/progyblue.png'                           #
-$AvatarName = "Monitor-Senseii"                                                                                                          #
-$WebHookUrl = 'YOUR DISCORD WEBHOOK HERE' #
-$ExcludedDevices = @("DeviceName1","DeviceName2","DeviceName...","DeviceNameX","2Win5")                                                  #
+$oAuthRefreshToken = 'YOUR TOKEN HERE'       #Add your Earnapp token here
+$AvatarImageURL = 'https://cdn.discordapp.com/attachments/972197177029980172/975730277139746826/progyblue.png'    #Chose the image you want for your discord WebHook
+$AvatarName = "Monitor-Senseii"        #WebHook Name                                                                                           
+$WebHookUrl = 'YOUR DISCORD WEBHOOK HERE' #Add here your WebHook Link
+$ExcludedDevices = @("DeviceName1","DeviceName2","DeviceName...","DeviceNameX","2Win5")   #Here you enter the devices that you do not want to be displayed on the BOT 
 #                                                                                                                                        #
 #                                                                                                                                        #
 ##########################################################################################################################################
