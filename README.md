@@ -24,7 +24,9 @@ Thanks to https://github.com/EvotecIT
  **4. Install Earnapp.js Module**
 Open a `Command Prompt` window in Administrator mode
 
-    >npm install earnapp.js
+   ```py
+   npm install earnapp.js
+   ```
 
 Thanks to https://github.com/LockBlock-dev
 
