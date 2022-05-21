@@ -7,28 +7,28 @@ a big thank you to **https://github.com/EvotecIT** for their PSDiscord module, a
 
 
 # Prerequisites
-Several libraries are needed here. This script is in Powershell. I also use javascript.
+Several libraries are needed here. This script is in Powershell. I also use javascript.  
 
  **1. Activate Powershell**
- Powershell in Administrator mode => `set-executionpolicy unrestricted`
- chose `yes for all` if necessary
+ Powershell in Administrator mode => `set-executionpolicy unrestricted`  
+ chose `yes for all` if necessary  
  
 **2. Download PSDiscord Module**
-Powershell in Administrator mode => `Install-Module PSDiscord` & also  `Update-Module PSDiscord`
-chose `yes for all` if necessary
+Powershell in Administrator mode => `Install-Module PSDiscord` & also  `Update-Module PSDiscord`  
+chose `yes for all` if necessary  
 Thanks to https://github.com/EvotecIT
 
  **3. Donwload NodeJS**
  Install NodeJs using this link => https://nodejs.org/dist/v16.15.0/node-v16.15.0-x64.msi  
 
  **4. Install Earnapp.js Module**
-Open a `Command Prompt` window in Administrator mode
+Open a `Command Prompt` window in Administrator mode  
 
    ```py
    npm install earnapp.js
-   ```
+   ```  
 
-Thanks to https://github.com/LockBlock-dev
+Thanks to https://github.com/LockBlock-dev  
 
  **5. Install Batch script**
 Run the `Install.bat` script in administrator mode
