@@ -1,6 +1,7 @@
 # Hello and welcome to Earnapp Offline Monitor
 
-Here is a **scriptbot** to see in real time the status of your devices linked to **EarnApp**. The script runs every **15** minutes, but you will only receive an alert every **1.5** hours if your device is offline. If a new device appears in the offline list, a new **Discord** message will be sent.
+Here is a **scriptbot** to see in real time the status of your devices linked to **EarnApp**.  
+The script runs every **15** minutes, but you will only receive an alert every **1.5** hours if your device is offline. If a new device appears in the offline list, a new **Discord** message will be sent.  
 **This is a script, not a bot, so no program running in the background.**
 
 a big thank you to **https://github.com/EvotecIT** for their PSDiscord module, and to **https://github.com/LockBlock-dev** for its API allowing to talk with Earnapp interface.
