@@ -17,11 +17,11 @@
 #                                                                                                                                        #
 #                     =====================Informations WebHook Discord==========================                                        #
 #                                                                                                                                        #
-$oAuthRefreshToken = ''       #
+$oAuthRefreshToken = ''                                                                                                                  #
 $AvatarImageURL = 'https://cdn.discordapp.com/attachments/972197177029980172/975730277139746826/progyblue.png'                           #
 $AvatarName = "Monitor-Senseii"                                                                                                          #
-$WebHookUrl = '' #
-$ExcludedDevices = [System.Collections.ArrayList]@("DeviceName1","DeviceName2","DeviceName...","DeviceNameX","2Win7")                   #                                                                                                                                        #
+$WebHookUrl = ''                                                                                                                         #
+$ExcludedDevices = [System.Collections.ArrayList]@("DeviceName1","DeviceName2","DeviceName...","DeviceNameX")                            #                                                                                                                                        #
 #                                                                                                                                        #
 #                                                                                                                                        #                                                                                                                                        #
 ##########################################################################################################################################
@@ -59,7 +59,6 @@ if (Test-Path ($resultsLogDir + "results.json")){
     }
     $offlineDeviceNumber = $offlineDevices.Count #Nombre de Machines offline || Number of offline devices
     MakeLogMessage("Il y a $offlineDeviceNumber client(s) déconnecté(s) ")#Logs
-    #$isExcluded = [System.Collections.ArrayList]@() #Tableau vide
     if($offlineDeviceNumber -ne 0){ # Si le nombre de machines éteintes est différent de zéro
         MakeLogMessage("Un message va donc être envoyé sur Discord")
         $Exclusion = 0
@@ -71,28 +70,36 @@ if (Test-Path ($resultsLogDir + "results.json")){
                 $Name = ":red_square: **Device:** " + $inputJson[0].$device.title + " :red_square:" 
                 $Value = ":biohazard: **UUID:**   " + $inputJson[0].$device.uuid  + " 
                 :globe_with_meridians: **IP:**   " + $inputJson[0].$device.ips #laisser la ligne sautée, c'est pour la présentation de l'embed dans discord
-                $temp3 =  $Fact.Add($j) 
-                $Fact[$j] = New-DiscordFact -Name $Name -Value $Value -Inline $false
+                $temp3 =  New-DiscordFact -Name $Name -Value $Value -Inline $false
+                $Fact.Add($temp3)
             }
         }
         MakeLogMessage("$Exclusion Appareils ont été exclus")
-
+        cmd.exe /c "setx COUNT_OFFLINE_NUMBER $offlineDeviceNumber" 
         #DISCORD BOT SECTION | Consultez la Doc des devs pour plus d'informations sur la Librairie: https://evotec.xyz/hub/scripts/psdiscord-powershell-module/
         $Author = New-DiscordAuthor -Name $AvatarName -IconUrl $AvatarImageURL
         $Section = New-DiscordSection -Title "$(Get-Date -Format 'HH:mm') | $($offlineDeviceNumber - $Exclusion) Device(s) offline | $Exclusion Excluded Device(s) " -Facts $Fact -Color BlueViolet -Author $Author -Thumbnail $Thumbnail 
         $Thumbnail = New-DiscordThumbnail -Url $AvatarImageURL
         if(!$env:LAST_MESSAGE_HOUR){
-            Send-DiscordMessage -WebHookUrl $WebHookUrl -Sections $Section -AvatarName $AvatarName -AvatarUrl $AvatarImageURL
-            cmd.exe /c "setx LAST_MESSAGE_HOUR $(FileTime)"
-            MakeLogMessage("Le Bot a transmis le message sur Discord à $(Get-Date -Format 'HH:mm')")
-            MakeLogMessage("Compteur démarré dans env:LAST_MESSAGE_HOUR")
-        }else{
-            $TimeDifference = ($(FileTime) - $env:LAST_MESSAGE_HOUR)
-            if($TimeDifference -ge 54000000000){
+            if ($offlineDeviceNumber -ne $Exclusion ){
                 Send-DiscordMessage -WebHookUrl $WebHookUrl -Sections $Section -AvatarName $AvatarName -AvatarUrl $AvatarImageURL
                 cmd.exe /c "setx LAST_MESSAGE_HOUR $(FileTime)"
                 MakeLogMessage("Le Bot a transmis le message sur Discord à $(Get-Date -Format 'HH:mm')")
-                MakeLogMessage("Compteur renouvelé dans env:LAST_MESSAGE_HOUR")
+                MakeLogMessage("Compteur démarré dans env:LAST_MESSAGE_HOUR")
+            }else{
+                    MakeLogMessage("Seules des machines exclues sont Offline.")
+            }
+        }else{
+            $TimeDifference = ($(FileTime) - $env:LAST_MESSAGE_HOUR)
+            if(($TimeDifference -ge 54000000000) -or ($env:COUNT_OFFLINE_NUMBER -ne $offlineDeviceNumber)){
+                if ($offlineDeviceNumber -ne $Exclusion ){
+                    Send-DiscordMessage -WebHookUrl $WebHookUrl -Sections $Section -AvatarName $AvatarName -AvatarUrl $AvatarImageURL
+                    cmd.exe /c "setx LAST_MESSAGE_HOUR $(FileTime)"
+                    MakeLogMessage("Le Bot a transmis le message sur Discord à $(Get-Date -Format 'HH:mm')")
+                    MakeLogMessage("Compteur renouvelé dans env:LAST_MESSAGE_HOUR")
+                }else{
+                    MakeLogMessage("Seule des machines exclues sont Offline.")
+                }
             }else{
                 MakeLogMessage("Un message a déjà été envoyé il y a moins de 1h30")
             }
