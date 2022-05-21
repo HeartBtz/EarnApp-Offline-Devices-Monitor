@@ -4,8 +4,8 @@
 #                                                                                                                                        #
 #                     ==============================Préréquis====================================                                        #
 #                                                                                                                                        #
-# Lancer en tant qu'ADMINISTRATEUR le script Install.bat présent dans le dossier                                                         #
-# Installer Node.js : https://nodejs.org/dist/v16.15.0/node-v16.15.0-x64.msi                                                             #
+# Run as ADMINISTRATOR the Install.bat script                                                                                            #
+# Install Node.js : https://nodejs.org/dist/v16.15.0/node-v16.15.0-x64.msi                                                               #
 #                                                                                                                                        #
 #                                                                                                                                        #
 #                     ===Discord Powershell Bot Librairy https://github.com/EvotecIT/PSDiscord===                                        #
@@ -15,7 +15,7 @@
 #> Update-Module PSDiscord                                                                                                               #
 #                                                                                                                                        #
 #                                                                                                                                        #
-#                     ==================Informations Variables à compléter=======================                                        #
+#                     ==================Information Variables to be completed====================                                        #
 #                                                                                                                                        #
 $oAuthRefreshToken = 'YOUR TOKEN HERE'       #Add your Earnapp token here
 $AvatarImageURL = 'https://cdn.discordapp.com/attachments/972197177029980172/975730277139746826/progyblue.png'    #Chose the image you want for your discord WebHook
