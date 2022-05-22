@@ -40,8 +40,8 @@ Run the `Install.bat` script in administrator mode
  **6. Filling variables in the powershell script**  
 Here you will need your OAuthToken EarnApp, as well as a webhook discord.  
 Some links to get this information.  
-OAuthToken => [Click Here (Thanks to LockBlock)](https://github.com/LockBlock-dev/earnapp.js/blob/master/Cookies.md#how-to-login-with-cookies)
-Discord WebHook => [Discord Tutorial Link](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
+OAuthToken => [Click Here (Thanks to LockBlock)](https://github.com/LockBlock-dev/earnapp.js/blob/master/Cookies.md#how-to-login-with-cookies)  
+Discord WebHook => [Discord Tutorial Link](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)  
 
 Now Open LectureJSON.ps1 and fill in the variables 
 ```ps
