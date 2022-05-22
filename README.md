@@ -9,22 +9,22 @@ The script runs every **15** minutes, but you will only receive an alert every *
 a big thank you to **https://github.com/EvotecIT** for their PSDiscord module, and to **https://github.com/LockBlock-dev** for its API allowing to talk with Earnapp interface.
 
 
-# Prerequisites
+# Prerequisites  
 Several libraries are needed here. This script is in Powershell. I also use javascript.  
 
- **1. Activate Powershell**
+ **1. Activate Powershell**  
  Powershell in Administrator mode => `set-executionpolicy unrestricted`  
  chose `yes for all` if necessary  
  
-**2. Download PSDiscord Module**
+**2. Download PSDiscord Module**  
 Powershell in Administrator mode => `Install-Module PSDiscord` & also  `Update-Module PSDiscord`  
 chose `yes for all` if necessary  
 Thanks to https://github.com/EvotecIT
 
- **3. Donwload NodeJS**
+ **3. Donwload NodeJS**  
  Install NodeJs using this link => https://nodejs.org/dist/v16.15.0/node-v16.15.0-x64.msi  
 
- **4. Install Earnapp.js Module**
+ **4. Install Earnapp.js Module**  
 Open a `Command Prompt` window in Administrator mode  
 
    ```py
@@ -33,13 +33,13 @@ Open a `Command Prompt` window in Administrator mode
 
 Thanks to https://github.com/LockBlock-dev  
 
- **5. Install Batch script**
+ **5. Install Batch script**  
 Run the `Install.bat` script in administrator mode
 ![Run as Administrator the Install.bat File](https://media.discordapp.net/attachments/972078178963177502/977715291540816012/unknown.png)
 
- **6. Filling variables in the powershell script**
-Here you will need your OAuthToken EarnApp, as well as a webhook discord.
-Here are some links to get this information.
+ **6. Filling variables in the powershell script**  
+Here you will need your OAuthToken EarnApp, as well as a webhook discord.  
+Some links to get this information.  
 OAuthToken => [Click Here (Thanks to LockBlock)](https://github.com/LockBlock-dev/earnapp.js/blob/master/Cookies.md#how-to-login-with-cookies)
 Discord WebHook => [Discord Tutorial Link](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
 
