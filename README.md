@@ -76,3 +76,13 @@ $ExcludedDevices = @("DeviceName1","DeviceName2","DeviceName...","DeviceNameX","
 ```
 
 In case of problems, contact me on discord => HeartBtz#0110 or open an issue here.
+
+## Log System
+You can find in the github files a shortcut to a `Log File.lnk` file.  
+It is a shortcut to the log file present in C:\Users\Public\DocumentsEarnappOfflineMonitor\ created with the "install.bat" script.  
+
+## How to launch script ?
+
+You don't have to do anything.   
+A scheduled task has been created and runs the script every 15 minutes.   
+Don't worry, if a device is offline during the night, there will only be a message every 1h30 (unless a new device appears in the list)
